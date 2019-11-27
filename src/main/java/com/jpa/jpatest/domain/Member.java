@@ -18,18 +18,13 @@ public class Member {
 
     private String name;
 
+    private String grade;
+
     private int age;
+
 
     @Embedded
     private Address address;
-
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "city", column = @Column(name = "COMPANY_CITY")),
-            @AttributeOverride(name = "street", column= @Column(name = "COMPANY_STREET")),
-            @AttributeOverride(name = "zipcode", column= @Column(name = "COMPANY_ZIPCODE"))
-    })
-    private Address companyAddress;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "team_id")
