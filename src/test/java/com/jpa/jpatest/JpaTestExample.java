@@ -45,9 +45,7 @@ public class JpaTestExample {
         team2.setName("트랜슈");
 
         //when
-        //양방향 매핑일때 팀 엔티티에서 회원 엔티티를 참조하려면 마찬가지로.. 회원엔티티가 영속 컨테스트안에 존재해야 합니다.
-        teamRepository.save(team1);
-        teamRepository.save(team2);
+
 
 
         Member member = new Member();
@@ -55,7 +53,7 @@ public class JpaTestExample {
         member.setName("임준영");
         member.setAge(28);
         member.setTeam(team1);
-        memberRepository.save(member);
+
 
         //영속컨텍스트가 열려있으므로 변경감지로 인해 위에 있는 회원 엔티티는 insert 쿼리로 등록 되다가  트랜잭션 커밋전에 변경감지로 인해 아래 회원엔티티는 update 쿼리가 전송됩니다.
 
@@ -65,16 +63,34 @@ public class JpaTestExample {
         newMember.setName("임광빈");
         newMember.setTeam(team2);
 
+        //양방향 매핑일때 팀 엔티티에서 회원 엔티티를 참조하려면 마찬가지로.. 회원엔티티가 영속 컨테스트안에 존재해야 합니다.
+        teamRepository.save(team1);
+        teamRepository.save(team2);
+
         //팀 엔티티가 영속 컨테스트안에 존재하지 않으면 외래키 매핑이 불가하기 때문에 에러 발생...
-        memberRepository.save(newMember);
-
-
-
-
      }
 
 
      @Test
+     @Transactional
+     public void 객체그래프_조인_테스트() throws Exception {
+
+         System.out.println("객체그래프 탐색 조인 수행!");
+        //given
+         List<Member> members = memberRepository.getMembersWithTeam();
+
+
+         //when
+         members.stream().forEach(m -> {
+             System.out.println(m.getName() + " " + m.getAge() + " " + m.getId() + " " + m.getTeam().getName());
+         });
+
+
+
+         //then
+      }
+
+/*     @Test
      @Transactional(readOnly = true)
      public void 양방향_매핑_조회_테스트() throws Exception {
 
@@ -97,18 +113,9 @@ public class JpaTestExample {
          //when
 
          //then
-      }
+      }*/
 
 
-      @Test
-      @Transactional
-      @Rollback(false)
-      public void 값타입_저장_테스트() throws Exception {
 
-          //given
-
-
-          //then
-       }
 
 }

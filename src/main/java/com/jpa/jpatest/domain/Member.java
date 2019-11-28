@@ -7,6 +7,11 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@NamedEntityGraph(name = "memberWithTeam", attributeNodes = {
+        @NamedAttributeNode("team")
+})
+
+
 @Entity
 @Setter
 @Getter
@@ -18,15 +23,12 @@ public class Member {
 
     private String name;
 
-    private String grade;
-
     private int age;
-
 
     @Embedded
     private Address address;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private Team team;
 
