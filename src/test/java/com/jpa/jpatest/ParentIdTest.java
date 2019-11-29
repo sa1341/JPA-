@@ -33,6 +33,8 @@ public class ParentIdTest {
         Child child = new Child();
         child.setName("임준영");
 
+        Child newChild = new Child();
+        newChild.setName("임주리");
         //parent.setChild(child);
         em.persist(parent);
         em.persist(child);
